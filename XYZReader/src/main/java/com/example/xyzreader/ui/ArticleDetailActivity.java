@@ -78,6 +78,8 @@ public class ArticleDetailActivity extends AppCompatActivity
             }
         });
 
+        mPager.setPageTransformer(false, new ParallaxPageTransformer());
+
         mUpButtonContainer = findViewById(R.id.up_container);
 
         mUpButton = findViewById(R.id.action_up);
@@ -191,6 +193,23 @@ public class ArticleDetailActivity extends AppCompatActivity
         @Override
         public int getCount() {
             return (mCursor != null) ? mCursor.getCount() : 0;
+        }
+    }
+
+    public class ParallaxPageTransformer implements ViewPager.PageTransformer {
+
+        public void transformPage(View view, float position) {
+            float alpha = 1.0F - Math.abs(position);
+            float rotation = 360f * Math.abs(position);
+            float translationX = -position * (view.getWidth() / 2);
+
+            view.findViewById(R.id.photo).setTranslationX(translationX);
+
+            view.findViewById(R.id.article_body).setAlpha(alpha);
+            view.findViewById(R.id.article_title).setAlpha(alpha);
+            view.findViewById(R.id.article_byline).setAlpha(alpha);
+
+            view.findViewById(R.id.share_fab).setRotation(rotation);
         }
     }
 }
