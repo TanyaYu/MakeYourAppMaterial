@@ -48,8 +48,9 @@ public class ArticleDetailFragment extends Fragment implements
     private long mItemId;
     private View mRootView;
     private int mMutedColor = 0xFF333333;
-    LinearLayout descriptionContainer;
-    AppBarLayout appBarLayout;
+    private LinearLayout descriptionContainer;
+    private AppBarLayout appBarLayout;
+    private TextView mBodyView;
 
     private int offSet;
     private ImageView mPhotoView;
@@ -125,7 +126,7 @@ public class ArticleDetailFragment extends Fragment implements
             public void onClick(View view) {
                 startActivity(Intent.createChooser(ShareCompat.IntentBuilder.from(getActivity())
                         .setType("text/plain")
-                        .setText("Some sample text")
+                        .setText(mBodyView.getText())
                         .getIntent(), getString(R.string.action_share)));
             }
         });
@@ -168,7 +169,7 @@ public class ArticleDetailFragment extends Fragment implements
         TextView titleView = (TextView) mRootView.findViewById(R.id.article_title);
         TextView bylineView = (TextView) mRootView.findViewById(R.id.article_byline);
         bylineView.setMovementMethod(new LinkMovementMethod());
-        TextView bodyView = (TextView) mRootView.findViewById(R.id.article_body);
+        mBodyView = (TextView) mRootView.findViewById(R.id.article_body);
 
 
         if (mCursor != null) {
@@ -195,7 +196,7 @@ public class ArticleDetailFragment extends Fragment implements
                                 + "</font>"));
 
             }
-            bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n|\n)", "<br />")));
+            mBodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n|\n)", "<br />")));
             ImageLoaderHelper.getInstance(getActivity()).getImageLoader()
                     .get(mCursor.getString(ArticleLoader.Query.PHOTO_URL), new ImageLoader.ImageListener() {
                         @Override
@@ -220,7 +221,7 @@ public class ArticleDetailFragment extends Fragment implements
             mRootView.setVisibility(View.GONE);
             titleView.setText("N/A");
             bylineView.setText("N/A" );
-            bodyView.setText("N/A");
+            mBodyView.setText("N/A");
         }
     }
 
