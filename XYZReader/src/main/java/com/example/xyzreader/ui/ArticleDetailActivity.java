@@ -200,7 +200,7 @@ public class ArticleDetailActivity extends AppCompatActivity
 
         public void transformPage(View view, float position) {
             float alpha = 1.0F - Math.abs(position);
-            float rotation = 360f * Math.abs(position);
+            float rotation = 720f * Math.abs(position);
             float translationX = -position * (view.getWidth() / 2);
 
             view.findViewById(R.id.photo).setTranslationX(translationX);
