@@ -38,6 +38,8 @@ public class ArticleDetailActivity extends AppCompatActivity
     private View mUpButtonContainer;
     private View mUpButton;
 
+    public static final String STATE_TOP_INSET = "state.top_inset";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,7 +93,7 @@ public class ArticleDetailActivity extends AppCompatActivity
                 @Override
                 public WindowInsets onApplyWindowInsets(View view, WindowInsets windowInsets) {
                     view.onApplyWindowInsets(windowInsets);
-                    mTopInset = windowInsets.getSystemWindowInsetTop();
+                    setmTopInset(windowInsets.getSystemWindowInsetTop());
                     mUpButtonContainer.setTranslationY(mTopInset);
                     updateUpButtonPosition();
                     return windowInsets;
@@ -104,7 +106,21 @@ public class ArticleDetailActivity extends AppCompatActivity
                 mStartId = ItemsContract.Items.getItemId(getIntent().getData());
                 mSelectedItemId = mStartId;
             }
+        } else {
+            setmTopInset(savedInstanceState.getInt(STATE_TOP_INSET));
         }
+    }
+
+    protected void setmTopInset(int topInset) {
+        mTopInset = topInset;
+        mUpButtonContainer.setTranslationY(mTopInset);
+        updateUpButtonPosition();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(STATE_TOP_INSET, mTopInset);
     }
 
     @Override
@@ -124,7 +140,7 @@ public class ArticleDetailActivity extends AppCompatActivity
             while (!mCursor.isAfterLast()) {
                 if (mCursor.getLong(ArticleLoader.Query._ID) == mStartId) {
                     final int position = mCursor.getPosition();
-                    mPager.setCurrentItem(position, false);
+                    mPager.setCurrentItem(position, true);
                     break;
                 }
                 mCursor.moveToNext();
