@@ -13,6 +13,8 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 
 /**
+ * Hides FAB when scroll down
+ *
  * Created by Tanya Yuferova on 12/13/2017.
  */
 
